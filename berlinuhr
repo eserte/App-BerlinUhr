@@ -28,15 +28,15 @@ sub redraw {
     my $sec = $now->second;
 
     $c->delete("all");
-    $c->createOval(180,0,220,40, -fill => $sec % 2 == 0 ? 'orange' : $c->cget(-bg));
+    $c->createOval(180,1,220,40, -fill => $sec % 2 == 0 ? 'orange' : $c->cget(-bg));
     my $y = 40;
-    for (1 .. $hour_top)    { $c->createRectangle(($_-1)*100, $y, $_*100, $y+40, -fill => 'red') }
+    for (1 .. 4)    { $c->createRectangle(($_-1)*100, $y, $_*100, $y+40, -fill => ($_ <= $hour_top ? 'red' : undef)) }
     $y+=40;
-    for (1 .. $hour_bottom) { $c->createRectangle(($_-1)*100, $y, $_*100, $y+40, -fill => 'red') }
+    for (1 .. 4) { $c->createRectangle(($_-1)*100, $y, $_*100, $y+40, -fill => ($_ <= $hour_bottom ? 'red' : undef)) }
     $y+=40;
-    for (1 .. $min_top)     { $c->createRectangle(($_-1)*(400/11), $y, $_*(400/11), $y+40, -fill => ($_%3==0 ? 'red' : 'orange')) }
+    for (1 .. 11)     { $c->createRectangle(($_-1)*(400/11), $y, $_*(400/11), $y+40, -fill => ($_ > $min_top ? undef : $_%3==0 ? 'red' : 'orange')) }
     $y+=40;
-    for (1 .. $min_bottom)  { $c->createRectangle(($_-1)*100, $y, $_*100, $y+40, -fill => 'orange') }
+    for (1 .. 4)  { $c->createRectangle(($_-1)*100, $y, $_*100, $y+40, -fill => ($_ <= $min_bottom ? 'orange' : undef)) }
 }
 
 redraw();
