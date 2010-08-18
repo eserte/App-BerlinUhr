@@ -17,7 +17,7 @@ use DateTime;
 use Tk;
 
 my $mw = tkinit;
-my $c = $mw->Canvas(-width => 400, -height => 200)->pack;
+my $c = $mw->Canvas(-width => 400, -height => 375)->pack(qw(-fill both -expand 1));
 
 sub redraw {
     my $now = DateTime->now(time_zone => "local");
@@ -27,16 +27,20 @@ sub redraw {
     my $min_bottom = $now->minute % 5;
     my $sec = $now->second;
 
+    my $box_w      = $c->width / 4;
+    my $box_w_5min = $c->width / 11;
+    my $box_h      = $c->height / 5;
+
     $c->delete("all");
-    $c->createOval(180,1,220,40, -fill => $sec % 2 == 0 ? 'orange' : $c->cget(-bg));
-    my $y = 40;
-    for (1 .. 4)    { $c->createRectangle(($_-1)*100, $y, $_*100, $y+40, -fill => ($_ <= $hour_top ? 'red' : undef)) }
-    $y+=40;
-    for (1 .. 4) { $c->createRectangle(($_-1)*100, $y, $_*100, $y+40, -fill => ($_ <= $hour_bottom ? 'red' : undef)) }
-    $y+=40;
-    for (1 .. 11)     { $c->createRectangle(($_-1)*(400/11), $y, $_*(400/11), $y+40, -fill => ($_ > $min_top ? undef : $_%3==0 ? 'red' : 'orange')) }
-    $y+=40;
-    for (1 .. 4)  { $c->createRectangle(($_-1)*100, $y, $_*100, $y+40, -fill => ($_ <= $min_bottom ? 'orange' : undef)) }
+    $c->createOval($box_w*2-$box_h/2,1, $box_w*2+$box_h/2,$box_h, -fill => $sec % 2 == 0 ? 'orange' : $c->cget(-bg));
+    my $y = $box_h;
+    for (1 .. 4)  { $c->createRectangle(($_-1)*$box_w, $y, $_*$box_w, $y+$box_h, -fill => ($_ <= $hour_top ? 'red' : undef)) }
+    $y+=$box_h;
+    for (1 .. 4)  { $c->createRectangle(($_-1)*$box_w, $y, $_*$box_w, $y+$box_h, -fill => ($_ <= $hour_bottom ? 'red' : undef)) }
+    $y+=$box_h;
+    for (1 .. 11) { $c->createRectangle(($_-1)*$box_w_5min, $y, $_*$box_w_5min, $y+$box_h, -fill => ($_ > $min_top ? undef : $_%3==0 ? 'red' : 'orange')) }
+    $y+=$box_h;
+    for (1 .. 4)  { $c->createRectangle(($_-1)*$box_w, $y, $_*$box_w, $y+$box_h, -fill => ($_ <= $min_bottom ? 'orange' : undef)) }
 }
 
 redraw();
