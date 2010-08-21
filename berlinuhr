@@ -17,7 +17,7 @@ use DateTime;
 use Tk;
 
 my $mw = tkinit;
-my $c = $mw->Canvas(-width => 400, -height => 375)->pack(qw(-fill both -expand 1));
+my $c = $mw->Canvas(-highlightthickness => 0, -width => 400, -height => 375)->pack(qw(-fill both -expand 1));
 
 sub redraw {
     my $now = DateTime->now(time_zone => "local");
@@ -32,7 +32,7 @@ sub redraw {
     my $box_h      = $c->height / 5;
 
     $c->delete("all");
-    $c->createOval($box_w*2-$box_h/2,1, $box_w*2+$box_h/2,$box_h, -fill => $sec % 2 == 0 ? 'orange' : $c->cget(-bg));
+    $c->createOval($box_w*2-$box_h/2,0, $box_w*2+$box_h/2,$box_h, -fill => $sec % 2 == 0 ? 'orange' : $c->cget(-bg));
     my $y = $box_h;
     for (1 .. 4)  { $c->createRectangle(($_-1)*$box_w, $y, $_*$box_w, $y+$box_h, -fill => ($_ <= $hour_top ? 'red' : undef)) }
     $y+=$box_h;
