@@ -49,3 +49,10 @@ $c->repeat(1000, \&redraw);
 MainLoop;
 
 __END__
+
+=pod
+
+L<http://de.wikipedia.org/wiki/Mengenlehreuhr>
+
+=cut
+
